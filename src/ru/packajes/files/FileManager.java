@@ -22,6 +22,11 @@ public class FileManager {
         Files.write(path, lines);
     }
 
+    public void writeAllLinesByCleanOld(String filePath, String... lines) throws IOException{
+        Path path = Path.of(filePath);
+        Files.write(path, List.of(lines), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
     public void appendLines(String filePath, List<String> lines) throws  IOException {
         Path path = Path.of(filePath);
         Files.write(path, lines, StandardOpenOption.CREATE, StandardOpenOption.APPEND);

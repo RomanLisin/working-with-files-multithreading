@@ -52,37 +52,131 @@ public class Main {
         }
         inputManager.close();
     }
+
+
         private static void task1(InputManager input, FileManager fileManager) throws IOException {
             System.out.println("Задание 1: Сравнение строк двух файлов");
             String filePath1 = input.getInput("Введите путь к первому файлу: ");
             String filePath2 =input.getInput("Введите путь ко второму файлу: ");
             List<String> lines1 = fileManager.readAllLines(filePath1);
             List<String> lines2 = fileManager.readAllLines(filePath2);
+            int minLen = Math.min(lines1.size(), lines2.size());
 
+            boolean allMatch = true;
+            for (int i=0; i<minLen ;i++) {
+                if (!lines2.get(i).equals(lines1.get(i))) {
+                    System.out.println("\nСтроки не совпадают: ");
+                    System.out.println("Файл 1, строка " + (i+1) + ": " + lines1.get(i));
+                    System.out.println("Файл 2, строка " + (i+2) + ": " + lines2.get(i));
+                    allMatch = false;
+                }
+            }
+            if (allMatch && lines1.size() == lines2.size()) {
+                System.out.println("Все строки совпадают.");
+            } else if (lines1.size() != lines2.size()) {
+                System.out.println("Файлы имеют разное количество строк.");
+
+            }
           }
 
-        private static void task2(InputManager input, FileManager fileManager){
+        private static void task2(InputManager input, FileManager fileManager) throws IOException {
             System.out.println("Задание 2: Поиск самой длинной строки");
             String filePath = input.getInput("Введите путь к файлу: ");
+
+            String[] result = fileManager.findLongestLine(filePath); //  первый - длина, второй -  сама строка
+
+            System.out.println("Длина самой длинной строки: " + result[0]);
+            System.out.println("Самая длинная строка:\n" + result[1]);
+
         }
 
         private static void task3(InputManager input, FileManager fileManager){
             System.out.println("Задание 3: Обработка массивов из файлов");
             String filePath = input.getInput("Введите путь к файлу: ");
 
-        }
+
         }
 
-        private static void task4(InputManager input, FileManager fileManager){
+
+        private static void task4(InputManager input, FileManager fileManager) throws IOException {
             System.out.println("Задание 4: Сохранение массива в файл");
             String filePath = input.getInput("Введите путь к файлу: ");
             int[] inputNum = input.getIntArray("Введите элементы массива через пробел: ");
 
+            String originalArray = arrayToString(inputNum);
+            String evenNumbers = getEvenNumbers(inputNum);
+            String oddNumbers = getOddNumbers(inputNum);
+            String reversedArray = getReversedArray(inputNum);
+
+            fileManager.writeAllLinesByCleanOld(filePath,
+                    originalArray,
+                    evenNumbers,
+                    oddNumbers,
+                    reversedArray
+            );
+            System.out.println("Массив успешно сохранен в файл.");
 
         }
 
         private static void task5(){
 
         }
-}
 
+        private static String arrayToString(int[] array) {
+            if (array.length ==0) return "";
+            StringBuilder sb = new StringBuilder(); // быстрее чем ""
+            for (int i = 0; i< array.length; i++) {
+                sb.append(array[i]);
+                if (i < array.length - 1) {
+                    sb.append(" ");
+                }
+            }
+            return sb.toString();
+        }
+
+        private static  String getEvenNumbers(int[] array) {
+            if (array == null || array.length == 0) {
+                return "Нет четных чисел";
+            }
+            StringBuilder sb = new StringBuilder();
+
+            for (int value : array) {
+                if (value % 2 == 0) {
+                    if (sb.length() > 0) {
+                        sb.append(" ");
+                    }
+                    sb.append(value);
+                }
+            }
+                return sb.length() > 0 ? sb.toString():"Нет четных чисел.";
+        }
+
+        private static String getOddNumbers(int[] array) {
+            if (array == null || array.length == 0) {
+                return "Нет нечетных чисел";
+            }
+            StringBuilder sb = new StringBuilder();
+
+            for (int value : array) {
+                if (value % 2 != 0) {
+                    if (sb.length() > 0) {
+                        sb.append(" ");
+                    }
+                    sb.append(value);
+                }
+            }
+            return sb.length() > 0 ? sb.toString():"Нет нечетных чисел.";
+        }
+        private static String getReversedArray(int[] array) {
+                if (array.length == 0) return "";
+                StringBuilder sb = new StringBuilder();
+                for(int i = array.length - 1; i >=0; i--) {
+                    sb.append(array[i]);
+                        if( i>0 ) {
+                            sb.append(" ");
+                        }
+                }
+                return sb.toString();
+        }
+
+}
