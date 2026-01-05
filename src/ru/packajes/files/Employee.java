@@ -1,5 +1,7 @@
 package ru.packajes.files;
 
+import java.util.List;
+
 public class Employee {
     private int id;
     private String lastName;
@@ -84,6 +86,12 @@ public class Employee {
                 parts[5]
         );
     }
+//    public  String[] toArrayString(List<Employee> listEmp){
+//        for(Employee emp : listEmp){
+//            emp.toString().;
+//
+//        }
+//    }
 }
 
 

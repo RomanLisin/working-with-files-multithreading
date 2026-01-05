@@ -15,6 +15,10 @@ public class InputManager {
         System.out.print(text);
         return scanner.nextLine();
     }
+    public int getInt(String text){
+        System.out.println(text);
+        return Integer.parseInt(scanner.nextLine());
+    }
 
     public int[] getIntArray(String text){
         System.out.println(text);

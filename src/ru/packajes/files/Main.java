@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+
 import ru.packajes.files.FileManager;
 import ru.packajes.files.InputManager;
 
@@ -40,7 +42,7 @@ public class Main {
                     task4(inputManager, fileManager);
                     break;
                 case "5":
-                    task5();
+                    task5(inputManager, fileManager);
                     break;
                 default:
                     System.out.println("Неверный выбор!");
@@ -158,8 +160,10 @@ public class Main {
 
         }
 
-        private static void task5(){
-
+        private static void task5(InputManager input, FileManager fileManager) throws  IOException{
+            System.out.println("\nИнформационная система \"Корпорация\"");
+            CorporationSystem corporationSystem = new CorporationSystem(input, fileManager);
+            corporationSystem.run();
         }
 
         private static String arrayToString(int[] array) {
