@@ -1,6 +1,7 @@
 package ru.packajes.files;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 import ru.packajes.files.FileManager;
@@ -90,10 +91,50 @@ public class Main {
 
         }
 
-        private static void task3(InputManager input, FileManager fileManager){
+
+        private static void task3(InputManager input, FileManager fileManager) throws IOException {
             System.out.println("Задание 3: Обработка массивов из файлов");
             String filePath = input.getInput("Введите путь к файлу: ");
 
+            List<int[]> arrays = fileManager.readArraysFromFile(filePath);
+
+            int totalSum = 0;
+            int globalMax = Integer.MIN_VALUE;
+            int globalMin = Integer.MAX_VALUE;
+
+            for (int i = 0; i < arrays.size(); i++) {
+                int[] array = arrays.get(i);
+                int arraySum = 0;
+                int arrayMax = array.length > 0 ? array[0] : 0;
+                int arrayMin = array.length > 0 ? array[0] : 0;
+
+                System.out.println("\nМассив " + (i + 1) + ": ");
+                for (int j = 0; j < array.length; j++) {
+                    if (array[j] > arrayMax) {
+                        arrayMax = array[j];
+                    }
+                    if (array[j] < arrayMin) {
+                        arrayMin = array[j];
+                    }
+
+                    if (array[j] > globalMax) {
+                        globalMax = array[j];
+                    }
+                    if (array[j] < globalMin) {
+                        globalMin = array[j];
+                    }
+
+                    arraySum += array[j];
+                }
+                totalSum += arraySum;
+
+                System.out.println("\n Сумма: " + arraySum);
+                System.out.println(" Максимум: " + arrayMax);
+                System.out.println(" Минимум: " + arrayMin);
+            }
+            System.out.println("\n Общая сумма всех массивов: " + totalSum);
+            System.out.println("Глобальный максимум: " + globalMax);
+            System.out.println("Глобальный минимум: " + globalMin);
 
         }
 
