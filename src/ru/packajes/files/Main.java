@@ -1,13 +1,9 @@
 package ru.packajes.files;
-import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.Callable;
 
-import ru.packajes.files.FileManager;
-import ru.packajes.files.InputManager;
+import ru.packajes.FileManager;
+import ru.packajes.InputManager;
 
 public class Main {
 

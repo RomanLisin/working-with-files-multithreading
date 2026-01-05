@@ -1,14 +1,11 @@
-package ru.packajes.files;
-import java.io.File;
+package ru.packajes;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import java.io.IOException;
-import java.util.concurrent.Phaser;
 
 public class FileManager {
 

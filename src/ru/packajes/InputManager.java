@@ -1,4 +1,4 @@
-package ru.packajes.files;
+package ru.packajes;
 
 import java.util.Scanner;
 
