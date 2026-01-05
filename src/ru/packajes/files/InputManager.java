@@ -12,7 +12,7 @@ public class InputManager {
     }
 
     public String getInput(String text){
-        System.out.println(text);
+        System.out.print(text);
         return scanner.nextLine();
     }
 

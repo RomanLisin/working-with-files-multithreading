@@ -20,7 +20,7 @@ public class Main {
         System.out.println("3. Обработка массивов из файла");
         System.out.println("4. Сохранение массива в файл");
         System.out.println("5. Информационная система 'Корпорация'");
-        System.out.println("Выберите задание (1-5): ");
+        System.out.print("Выберите задание (1-5): ");
 
         //int choice = input.nextLine();
         String choice = inputManager.getInput("");
@@ -53,7 +53,6 @@ public class Main {
         }
         inputManager.close();
     }
-
 
         private static void task1(InputManager input, FileManager fileManager) throws IOException {
             System.out.println("Задание 1: Сравнение строк двух файлов");
@@ -132,7 +131,7 @@ public class Main {
                 System.out.println(" Максимум: " + arrayMax);
                 System.out.println(" Минимум: " + arrayMin);
             }
-            System.out.println("\n Общая сумма всех массивов: " + totalSum);
+            System.out.println("\nОбщая сумма всех массивов: " + totalSum);
             System.out.println("Глобальный максимум: " + globalMax);
             System.out.println("Глобальный минимум: " + globalMin);
 
