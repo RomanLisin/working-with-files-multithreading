@@ -12,7 +12,9 @@ public class InputManager {
     }
 
     public String getInput(String text){
-        System.out.print(text);
+        if(!text.isEmpty()){
+            System.out.print(text);
+        }
         return scanner.nextLine();
     }
     public int getInt(String text){
