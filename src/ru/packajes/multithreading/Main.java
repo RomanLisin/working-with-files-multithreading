@@ -3,9 +3,16 @@ package ru.packajes.multithreading;
 import ru.packajes.FileManager;
 import ru.packajes.InputManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.nio.file.Path;
+
 
 public class Main {
 
@@ -33,42 +40,36 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Ошибка: " + e.getMessage());
         }
-
         inputManager.close();
     }
 
     private static void task1(OperationManager operationManager) {
         int arraySize = 10;
-        System.out.println("Генерируем массив из " + arraySize + " чисел...");
+        System.out.println("Генерируем массив из " + arraySize + " чисел");
         int[] numbers = operationManager.generateNumbers(arraySize);
 
         System.out.println("Массив создан: " + operationManager.arrayToString(numbers));
 
-        // Поток для суммы
-        Thread sumThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        Thread sumThread = new Thread(() -> {
                 try {
-                    Thread.sleep(100); // Немного ждем
+                    Thread.sleep(100);
                     BigDecimal sum = operationManager.findSum(numbers);
                     System.out.println("Поток суммы: сумма = " + sum);
                 } catch (Exception e) {
                     System.out.println("Ошибка в потоке суммы: " + e.getMessage());
                 }
-            }
         });
 
-        // Поток для среднего
         Thread averageThread = new Thread(() -> {
                 try {
-                    Thread.sleep(100); // Немного ждем
+                    Thread.sleep(100);
                     BigDecimal average = operationManager.findAverage(numbers);
                     System.out.println("Поток среднего: среднее = " + average);
                 } catch (Exception e) {
                     System.out.println("Ошибка в потоке среднего: " + e.getMessage());
                 }
         });
-        System.out.println("\nЗапускаем потоки...");
+        System.out.println("\nЗапускаем потоки");
         sumThread.start();
         averageThread.start();
 
@@ -87,7 +88,7 @@ public class Main {
         String filePath = inputManager.getInput("Введите путь к файлу: ");
 
         int arraySize = 20;
-        System.out.println("Генерируем " + arraySize + " чисел...");
+        System.out.println("Генерируем " + arraySize + " чисел");
         int[] numbers = operationManager.generateNumbers(arraySize);
 
         fileManager.writeNumbersToFile(filePath, numbers);
@@ -100,7 +101,7 @@ public class Main {
                     int[] fileNumbers = fileManager.readNumbersFromFile(filePath);
                     List<Integer> primes = operationManager.findPrimes(fileNumbers);
                     String primeFile = "primes.txt";
-                    List<String> lines = new java.util.ArrayList<>();
+                    List<String> lines = new ArrayList<>();
                     lines.add("Простые числа: " + primes.size());
                     for (int prime : primes) {
                         lines.add(String.valueOf(prime));
@@ -121,7 +122,7 @@ public class Main {
                     int[] fileNumbers = fileManager.readNumbersFromFile(filePath);
                     int count = 0;
                     String factorialFile = "factorials.txt";
-                    List<String> lines = new java.util.ArrayList<>();
+                    List<String> lines = new ArrayList<>();
                     lines.add("Факториалы чисел:");
 
                     for (int num : fileNumbers) {
@@ -138,7 +139,7 @@ public class Main {
                 }
         });
 
-        System.out.println("\nЗапускаем потоки...");
+        System.out.println("\nЗапускаем потоки");
         primeThread.start();
         factorialThread.start();
 
@@ -162,14 +163,14 @@ public class Main {
 
         Thread copyThread = new Thread(() -> {
                 try {
-                    System.out.println("Начинаем копирование...");
+                    System.out.println("Начинаем копирование");
                     fileManager.copyDirectory(sourceDir, targetDir);
                     System.out.println("Копирование завершено!");
                 } catch (Exception e) {
                     System.out.println("Ошибка при копировании: " + e.getMessage());
                 }
         });
-        System.out.println("\nЗапускаем поток копирования...");
+        System.out.println("\nЗапускаем поток копирования");
         copyThread.start();
 
         try {
@@ -188,24 +189,24 @@ public class Main {
         String searchWord = inputManager.getInput("Введите слово для поиска: ");
 
         String forbiddenFile = "forbidden_words.txt";
-        List<String> forbiddenWords = java.util.Arrays.asList("плохо", "ошибка", "проблема");
+        List<String> forbiddenWords = Arrays.asList("плохо", "ошибка", "проблема");
         fileManager.writeAllLines(forbiddenFile, forbiddenWords);
         System.out.println("Создан файл с запрещенными словами: " + forbiddenFile);
 
         // поток для поиска файлов
         Thread searchThread = new Thread(() -> {
             try {
-                System.out.println("Поток поиска: ищем файлы...");
+                System.out.println("Поток поиска: ищем файлы");
 
                 // получаем все файлы
-                List<java.nio.file.Path> allFiles = fileManager.getAllFilesInDirectory(directoryPath);
+                List<Path> allFiles = fileManager.getAllFilesInDirectory(directoryPath);
                 System.out.println("Всего файлов в директории: " + allFiles.size());
 
                 // ищем файлы с нужным словом
-                List<java.nio.file.Path> foundFiles = new java.util.ArrayList<>();
-                for (java.nio.file.Path file : allFiles) {
+                List<Path> foundFiles = new ArrayList<>();
+                for (Path file : allFiles) {
                     try {
-                        String content = new String(java.nio.file.Files.readAllBytes(file));
+                        String content = new String(Files.readAllBytes(file));
                         if (content.contains(searchWord)) {
                             foundFiles.add(file);
                         }
@@ -217,16 +218,16 @@ public class Main {
                 // объединяем содержимое
                 if (!foundFiles.isEmpty()) {
                     String mergedFile = "merged.txt";
-                    List<String> allLines = new java.util.ArrayList<>();
+                    List<String> allLines = new ArrayList<>();
 
-                    for (java.nio.file.Path file : foundFiles) {
+                    for (Path file : foundFiles) {
                         allLines.add("Файл: " + file.getFileName());
-                        List<String> lines = java.nio.file.Files.readAllLines(file);
+                        List<String> lines = Files.readAllLines(file);
                         allLines.addAll(lines);
                         allLines.add("");
                     }
 
-                    java.nio.file.Files.write(java.nio.file.Paths.get(mergedFile), allLines);
+                    Files.write(Paths.get(mergedFile), allLines);
                     System.out.println("Содержимое объединено в: " + mergedFile);
                 }
 
@@ -236,27 +237,25 @@ public class Main {
         });
 
         // поток для фильтрации
-        Thread filterThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        Thread filterThread = new Thread(() -> {
                 try {
-                    System.out.println("Поток фильтрации: ждем завершения поиска...");
+                    System.out.println("Поток фильтрации: ждем завершения поиска");
 
                     // ждем завершения поиска
                     searchThread.join();
 
-                    System.out.println("Поток фильтрации: начинаем фильтрацию...");
+                    System.out.println("Поток фильтрации: начинаем фильтрацию");
 
                     // читаем запрещенные слова
                     List<String> forbidden = fileManager.readAllLines(forbiddenFile);
 
                     // читаем объединенный файл
                     String mergedFile = "merged.txt";
-                    if (java.nio.file.Files.exists(java.nio.file.Paths.get(mergedFile))) {
+                    if (Files.exists(Paths.get(mergedFile))) {
                         List<String> lines = fileManager.readAllLines(mergedFile);
 
                         // удаляем запрещенные слова
-                        List<String> filteredLines = new java.util.ArrayList<>();
+                        List<String> filteredLines = new ArrayList<>();
                         for (String line : lines) {
                             String filteredLine = line;
                             for (String word : forbidden) {
@@ -276,10 +275,9 @@ public class Main {
                 } catch (Exception e) {
                     System.out.println("Ошибка в потоке фильтрации: " + e.getMessage());
                 }
-            }
         });
 
-        System.out.println("\nЗапускаем потоки...");
+        System.out.println("\nЗапускаем потоки");
         searchThread.start();
         filterThread.start();
 
