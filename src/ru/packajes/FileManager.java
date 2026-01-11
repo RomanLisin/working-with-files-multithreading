@@ -151,11 +151,10 @@ public class FileManager {
 
         for (Path file : files) {
             List<String> lines = Files.readAllLines(file);
-            allLines.add("=== Файл: " + file.getFileName() + " ===");
+            allLines.add("Файл: " + file.getFileName());
             allLines.addAll(lines);
             allLines.add(""); // пустая строка между файлами
         }
-
         Files.write(Paths.get(outputFile), allLines);
     }
     // удаление запрещенных слов из файлы
@@ -180,11 +179,11 @@ public class FileManager {
         DirectoryStats stats = new DirectoryStats();
         Path startPath = Paths.get(directoryPath);
 
-        Files.walkFileTree(startPath, new SimpleFileVisitor<Path>() {
+        Files.walkFileTree(startPath, new SimpleFileVisitor<Path>() { // анонимный класс
             @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException { // BasicFileAttributes для того, чтобы файл не открывать несколько раз
                 stats.fileCount++;
-                stats.totalSize += Files.size(file);
+                stats.totalSize += attrs.size();
                 String fileName = file.getFileName().toString();
                 int dotIndex = fileName.lastIndexOf('.');
                 if (dotIndex > 0) {
